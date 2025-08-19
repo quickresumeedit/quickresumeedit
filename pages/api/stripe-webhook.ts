@@ -14,16 +14,18 @@ function buffer(req: NextApiRequest): Promise<Buffer> {
   });
 }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: '2023-10-16' });
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '');
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end('Method Not Allowed');
+
   const sig = req.headers['stripe-signature'];
   if (!sig) return res.status(400).send('Missing stripe-signature');
 
-  const buf = await buffer(req);
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
   if (!endpointSecret) return res.status(500).send('Webhook secret not set');
+
+  const buf = await buffer(req);
 
   let event: Stripe.Event;
   try {
@@ -34,13 +36,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   switch (event.type) {
-    case 'checkout.session.completed':
-      // TODO: mark user as active subscriber
+    case 'checkout.session.completed': {
       break;
-    case 'invoice.payment_succeeded':
+    }
+    case 'invoice.payment_succeeded': {
       break;
-    case 'customer.subscription.deleted':
+    }
+    case 'customer.subscription.deleted': {
       break;
+    }
   }
 
   res.json({ received: true });
