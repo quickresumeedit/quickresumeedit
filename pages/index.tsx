@@ -49,6 +49,9 @@ export default function Home() {
           <pre style={{whiteSpace:'pre-wrap'}}>{result}</pre>
         </section>
       )}
+      <div style={{marginTop:32}}>
+        <a href="/pricing">See Pricing</a>
+      </div>
       <footer style={{marginTop:40, fontSize:12, opacity:0.7}}>© {new Date().getFullYear()} QuickResumeEdit</footer>
     </main>
   );

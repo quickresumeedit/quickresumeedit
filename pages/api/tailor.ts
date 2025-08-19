@@ -11,8 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) throw new Error('OPENAI_API_KEY not set');
 
-    // Simple prompt for MVP using OpenAI Responses API (text)
-    const prompt = `You are an expert resume writer and ATS optimizer. 
+    const prompt = `You are an expert resume writer and ATS optimizer.
 Given the resume below and the target job description, rewrite the resume content to:
 - Keep truthful experience, but match keywords and phrasing from the job description.
 - Improve clarity, bullet structure, and measurable results.
@@ -25,7 +24,6 @@ ${resumeText}
 ${jobText}
 `;
 
-    // Call OpenAI (Responses API)
     const response = await fetch('https://api.openai.com/v1/responses', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
